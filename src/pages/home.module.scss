@@ -1,20 +1,31 @@
 .homepage {
-    padding: 0 4rem;
-    height: calc(100vh - 6.5rem);
+    padding: 0 1.8rem;
     overflow-y: scroll;
+    height: calc(100vh - 17.2rem);
 
     h2 {
         margin-top: 3rem;
         margin-bottom: 1.5rem;
     }
+
+    @media all and (min-width: 600px) {
+        height: calc(100vh - 14rem);
+    }
+
+    @media all and (min-width: 1200px) {
+        padding: 0 4rem;
+        height: calc(100vh - 6.5rem);
+        overflow-y: scroll;
+    }
 }
 
 .latestEpisodes {
     ul {
-        list-style: none;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(1, 1fr);
         gap: 1.5rem;
+
+        width: 22.4rem;
 
         li {
             background: var(--white);
@@ -22,9 +33,10 @@
             padding: 1.25rem;
             border-radius: 1.5rem;
             position: relative;
-
-            display: flex;
-            align-items: center;
+            list-style: none;
+            text-align: center;
+            flex-direction: column;
+            width: 22.4rem;
 
             img {
                 width: 6rem;
@@ -107,6 +119,24 @@
             }
         }
     }
+
+    @media all and (min-width: 1200px) {
+        ul {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+
+            li {
+                display: flex;
+                align-items: center;
+                margin-bottom: 0;
+                text-align: left;
+                flex-direction: row;
+
+                width: 34.6rem;
+            }
+        }
+    }
 }
 
 .allEpisodes {
@@ -169,6 +199,12 @@
                     filter: brightness(0.92);
                 }
             }
+        }
+    }
+
+    .allEpisodesItem {
+        @media all and (max-width: 600px) {
+            display: none;
         }
     }
 }

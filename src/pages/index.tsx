@@ -42,7 +42,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
       <section className={styles.latestEpisodes}>
         <h2>Últimos Lançamentos</h2>
 
-        <ul>
+        <ul className={styles.latestEpisodesItem}>
           {latestEpisodes.map((episode, index) => {
             return (
               <li key={episode.id}>
@@ -79,10 +79,10 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
           <thead>
             <tr>
               <th></th>
-              <th>Podcast</th>
-              <th>Integrantes</th>
+              <th style={{ padding: 8 }}>Podcast</th>
+              <th className={styles.allEpisodesItem}>Integrantes</th>
               <th>Data</th>
-              <th>Duração</th>
+              <th className={styles.allEpisodesItem}>Duração</th>
               <th></th>
             </tr>
           </thead>
@@ -90,23 +90,22 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
             {allEpisodes.map((episode, index) => {
               return (
                 <tr key={episode.id}>
-                  <td style={{ width: 72 }}>
+                  <td className={styles.allEpisodesImage}>
                     <img
-                      width={120}
-                      height={120}
                       src={episode.thumbnail}
                       alt={episode.title}
-                      //  objectFit="cover"
+                      className={styles.allEpisodesItem}
+                      style={{ margin: 8 }}
                     />
                   </td>
-                  <td>
+                  <td style={{ paddingRight: 14 }}>
                     <Link href={`/episodes/${episode.id}`}>
                       <a>{episode.title}</a>
                     </Link>
                   </td>
-                  <td>{episode.members}</td>
+                  <td className={styles.allEpisodesItem}>{episode.members}</td>
                   <td style={{ width: 100 }}>{episode.publishedAt}</td>
-                  <td>{episode.durationAsString}</td>
+                  <td className={styles.allEpisodesItem}>{episode.durationAsString}</td>
                   <td>
                     <button type="button" onClick={() => playList(episodeList, index + latestEpisodes.length)}>
                       <img src="/play-green.svg" alt="Tocar episódio" />
@@ -125,7 +124,7 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
 export const getStaticProps: GetStaticProps = async () => {
   const { data } = await api.get('episodes', {
     params: {
-      _limit: 12,
+      _limit: 10,
       _sort: 'published_at',
       _order: 'desc',
     },
