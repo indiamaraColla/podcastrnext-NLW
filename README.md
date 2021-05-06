@@ -9,11 +9,16 @@ Projeto Podcastr foi desenvolvido durante imersão de React JS na NLW da Rockets
 <br>
 
 
-<!-- <img src="src/assets/plantmanager.gif" width="414" height="736" />
+<img src="assets/mobile.gif" width="414" height="736" />
 
 <br>
 -
-<br> -->
+<br>
+<img src="assets/desktop.gif" width="900" height="900" />
+
+<br>
+-
+<br>
 
 
 ### Prática
