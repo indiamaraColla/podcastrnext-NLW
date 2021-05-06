@@ -1,7 +1,9 @@
 .wrapper {
-    display: flex;
+    @media all and (min-width: 1200px) {
+        display: flex;
 
-    main {
-        flex: 1;
+        main {
+            flex: 1;
+        }
     }
 }
