@@ -1,6 +1,7 @@
+import React from 'react';
 import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-import Image from 'next/image';
+// import Image from 'next/image';
 import Link from 'next/link';
 import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -10,7 +11,6 @@ import { convertDurationToTimeString } from '../../utils/convertDurationToTimeSt
 
 import styles from './episode.module.scss';
 import { usePlayer } from '../../contexts/PlayerContext';
-import React from 'react';
 
 type Episode = {
   id: string;
@@ -39,10 +39,14 @@ export default function Episode({ episode }: EpisodeProps) {
       <div className={styles.thumbnailContainer}>
         <Link href="/">
           <button type="button">
-            <img src="/arrow-left.svg" alt="voltar" />
+            <img src="/arrow-left.svg" alt="Voltar" />
           </button>
         </Link>
-        <Image width={700} height={160} src={episode.thumbnail} objectFit="cover" />
+        <img
+          src={episode.thumbnail}
+          className={styles.thumbnail}
+          // objectFit="cover"
+        />
         <button type="button" onClick={() => play(episode)}>
           <img src="/play.svg" alt="Tocar episódio" />
         </button>
@@ -69,21 +73,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
     },
   });
 
-  const paths = data.map((episode) => {
+  const paths = data.episodes.map((episode) => {
     return {
       params: {
         slug: episode.id,
       },
     };
   });
+
   return {
-    paths: [
-      {
-        params: {
-          slug: 'a-importancia-da-contribuicao-em-open-source',
-        },
-      },
-    ],
+    paths,
     fallback: 'blocking',
   };
 };
@@ -91,16 +90,26 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { slug } = ctx.params;
 
-  const { data } = await api.get(`/episodes/${slug}`);
+  const response = await api.get('episodes', {
+    params: {
+      _limit: 2,
+      _sort: 'published_at',
+      _order: 'desc',
+    },
+  });
+
+  const data = response.data.episodes.find((episode) => episode.id === slug);
 
   const episode = {
     id: data.id,
     title: data.title,
     thumbnail: data.thumbnail,
     members: data.members,
-    publishedAt: format(parseISO(data.published_at), 'd MMM yy', { locale: ptBR }),
     duration: Number(data.file.duration),
     durationAsString: convertDurationToTimeString(Number(data.file.duration)),
+    publishedAt: format(parseISO(data.published_at), 'd MMM yy', {
+      locale: ptBR,
+    }),
     description: data.description,
     url: data.file.url,
   };
@@ -109,6 +118,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     props: {
       episode,
     },
-    revalidate: 60 * 60 * 24, //24horas
+    revalidate: 60 * 60 * 24,
   };
 };
